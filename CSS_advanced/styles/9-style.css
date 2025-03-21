@@ -1,0 +1,10 @@
+/* 9-style.css - Anchor Styling */
+
+html {
+    scroll-behavior: smooth;
+}
+
+a {
+    color: var(--text-color);
+    text-decoration: none;
+}
