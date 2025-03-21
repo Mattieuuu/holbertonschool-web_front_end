@@ -1,0 +1,10 @@
+:root {
+    --section-header-align: center;
+}
+
+.section-header {
+    text-align: var(--section-header-align);
+}
+
+.section-tagline {
+}
