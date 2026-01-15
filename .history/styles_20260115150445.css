@@ -475,22 +475,20 @@
   .card-testimonial {
     text-align: center;
   }
-
-  .card-testimonial .card-quote p {
-    color: var(--color-white);
-  }
-
+  
   .card-testimonial .card-avatar {
     border-radius: 50%;
     width: 10rem;
     height: 10rem;
   }
-
+  
   .card-testimonial .card-quote cite {
     display: block;
     padding-top: 1rem;
     color: var(--color-primary);
-  }  .card-testimonial .card-quote {
+  }
+  
+  .card-testimonial .card-quote {
     position: relative;
   }
   
@@ -502,4 +500,16 @@
     color: #efeded;
     font-size: 10rem;
     z-index: -1;
+  }
+
+  /* Search icon
+      ============================= */
+  
+  .search-icon {
+    float: right;
+    padding: 2rem 0;
+  }
+
+  .search-icon svg {
+    fill: var(--color-white);
   }
