@@ -522,7 +522,7 @@
   z-index: 4;
 }
 
-.form-search .search-button svg {
+.form-search .search-button .search-icon {
   fill: var(--color-white);
   width: 1.5rem;
   height: 1.5rem;
