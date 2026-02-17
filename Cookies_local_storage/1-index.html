@@ -1,0 +1,124 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Cookies and Local Storage</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            max-width: 800px;
+            margin: 50px auto;
+            padding: 20px;
+        }
+        
+        h1, h2 {
+            color: #333;
+        }
+        
+        input[type="text"], input[type="email"] {
+            padding: 10px;
+            margin: 10px;
+            border: 1px solid #ccc;
+            border-radius: 4px;
+            width: 200px;
+        }
+        
+        button {
+            padding: 10px 15px;
+            margin: 10px;
+            border: 1px solid #ccc;
+            border-radius: 4px;
+            background-color: #f8f9fa;
+            cursor: pointer;
+        }
+        
+        button:hover {
+            background-color: #e9ecef;
+        }
+        
+        p {
+            margin: 10px 0;
+            padding: 10px;
+            background-color: #f8f9fa;
+            border-radius: 4px;
+        }
+    </style>
+</head>
+<body>
+    <h1>Login to the website</h1>
+    
+    <div>
+        <input type="text" id="firstname" placeholder="Firstname">
+        <input type="email" id="email" placeholder="Email">
+        <button onclick="setCookies()">Log me in</button>
+    </div>
+    
+    <h2>Cookies</h2>
+    
+    <div>
+        <button onclick="showCookies()">Show the cookies</button>
+    </div>
+    
+    <div id="cookies-display"></div>
+
+    <script>
+        function setCookies() {
+            // Get values from the input fields
+            const firstname = document.getElementById('firstname').value;
+            const email = document.getElementById('email').value;
+            
+            // Calculate expiration date (10 days from now)
+            const expirationDate = new Date();
+            expirationDate.setTime(expirationDate.getTime() + (10 * 24 * 60 * 60 * 1000)); // 10 days in milliseconds
+            const expires = "expires=" + expirationDate.toUTCString();
+            
+            // Set cookies with expiration date and path
+            document.cookie = `firstname=${firstname}; ${expires}; path=/`;
+            document.cookie = `email=${email}; ${expires}; path=/`;
+            
+            console.log('Cookies set with expiration:', { firstname, email, expires: expirationDate });
+            
+            // Display expiration info on page
+            const info = document.createElement('p');
+            info.style.background = '#e3f2fd';
+            info.innerHTML = `✅ Cookies created with expiration: ${expirationDate.toLocaleString()}`;
+            document.getElementById('cookies-display').appendChild(info);
+        }
+        
+        function showCookies() {
+            // Get all cookies
+            const cookies = document.cookie;
+            
+            // Parse cookies to get our specific ones
+            const cookieArray = cookies.split('; ');
+            let firstname = '';
+            let email = '';
+            
+            cookieArray.forEach(cookie => {
+                const [name, value] = cookie.split('=');
+                if (name === 'firstname') {
+                    firstname = value || '';
+                }
+                if (name === 'email') {
+                    email = value || '';
+                }
+            });
+            
+            // Create a new paragraph element
+            const paragraph = document.createElement('p');
+            
+            // Set the inner HTML with our cookies information
+            if (firstname || email) {
+                paragraph.innerHTML = `Cookies: firstname=${firstname}; email=${email}`;
+            } else {
+                paragraph.innerHTML = `Cookies: No firstname or email cookies found`;
+            }
+            
+            // Append the paragraph to the cookies display area
+            const displayArea = document.getElementById('cookies-display');
+            displayArea.appendChild(paragraph);
+        }
+    </script>
+</body>
+</html>

@@ -1,0 +1,190 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Cookies and Local Storage</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            max-width: 800px;
+            margin: 50px auto;
+            padding: 20px;
+        }
+        
+        h1, h2 {
+            color: #333;
+        }
+        
+        input[type="text"], input[type="email"] {
+            padding: 10px;
+            margin: 10px;
+            border: 1px solid #ccc;
+            border-radius: 4px;
+            width: 200px;
+        }
+        
+        button {
+            padding: 10px 15px;
+            margin: 10px;
+            border: 1px solid #ccc;
+            border-radius: 4px;
+            background-color: #f8f9fa;
+            cursor: pointer;
+        }
+        
+        button:hover {
+            background-color: #e9ecef;
+        }
+        
+        .logout-link {
+            font-weight: normal !important;
+            font-style: italic;
+            margin-left: 10px;
+            cursor: pointer;
+            text-decoration: underline;
+        }
+        
+        #login-form {
+            display: block;
+        }
+    </style>
+</head>
+<body>
+    <div id="login-form">
+        <h2>Login to the website</h2>
+        <div>
+            <input type="text" id="firstname" placeholder="Firstname">
+            <input type="email" id="email" placeholder="Email">
+            <button onclick="setCookies()">Log me in</button>
+        </div>
+    </div>
+
+    <script>
+        function setCookies() {
+            // Get values from the input fields
+            const firstname = document.getElementById('firstname').value;
+            const email = document.getElementById('email').value;
+            
+            // Calculate expiration date (10 days from now)
+            const expirationDate = new Date();
+            expirationDate.setTime(expirationDate.getTime() + (10 * 24 * 60 * 60 * 1000)); // 10 days in milliseconds
+            const expires = "expires=" + expirationDate.toUTCString();
+            
+            // Set cookies with expiration date and path
+            document.cookie = `firstname=${firstname}; ${expires}; path=/`;
+            document.cookie = `email=${email}; ${expires}; path=/`;
+            
+            console.log('Cookies set with expiration:', { firstname, email, expires: expirationDate });
+            
+            // After setting cookies, show welcome message
+            showWelcomeMessageOrForm();
+        }
+        
+        function getCookie(name) {
+            // Get all cookies
+            const cookies = document.cookie;
+            
+            // If there are no cookies, return empty string
+            if (!cookies) {
+                return '';
+            }
+            
+            // Split cookies into array
+            const cookieArray = cookies.split('; ');
+            
+            // Search for the specific cookie
+            for (let i = 0; i < cookieArray.length; i++) {
+                const cookie = cookieArray[i];
+                const [cookieName, cookieValue] = cookie.split('=');
+                
+                if (cookieName === name) {
+                    return cookieValue || '';
+                }
+            }
+            
+            // If cookie not found, return empty string
+            return '';
+        }
+        
+        function showForm() {
+            // Remove welcome message if it exists
+            const welcomeMessage = document.getElementById('welcome-message');
+            if (welcomeMessage) {
+                welcomeMessage.remove();
+            }
+            
+            // Show the form
+            const loginForm = document.getElementById('login-form');
+            if (loginForm) {
+                loginForm.style.display = 'block';
+            }
+        }
+        
+        function hideForm() {
+            // Hide the form
+            const loginForm = document.getElementById('login-form');
+            if (loginForm) {
+                loginForm.style.display = 'none';
+            }
+        }
+        
+        function deleteCookiesAndShowForm() {
+            // Remove the two cookies by setting them to expire in the past
+            document.cookie = 'firstname=; expires=Thu, 01 Jan 1970 00:00:00 UTC; path=/;';
+            document.cookie = 'email=; expires=Thu, 01 Jan 1970 00:00:00 UTC; path=/;';
+            
+            // Show the form
+            showForm();
+        }
+        
+        function showWelcomeMessageOrForm() {
+            // Get cookie values
+            const firstname = getCookie('firstname');
+            const email = getCookie('email');
+            
+            // Check if user is logged in (both cookies exist and not empty)
+            if (firstname && email) {
+                // Hide the form
+                hideForm();
+                
+                // Remove existing welcome message if any
+                const existingWelcome = document.getElementById('welcome-message');
+                if (existingWelcome) {
+                    existingWelcome.remove();
+                }
+                
+                // Create welcome message with JavaScript
+                const welcomeDiv = document.createElement('div');
+                welcomeDiv.id = 'welcome-message';
+                
+                const welcomeTitle = document.createElement('h1');
+                welcomeTitle.textContent = `Welcome: ${firstname} `;
+                
+                // Create logout link
+                const logoutLink = document.createElement('a');
+                logoutLink.textContent = '(logout)';
+                logoutLink.className = 'logout-link';
+                logoutLink.onclick = function() {
+                    deleteCookiesAndShowForm();
+                };
+                
+                // Append logout link to title
+                welcomeTitle.appendChild(logoutLink);
+                welcomeDiv.appendChild(welcomeTitle);
+                
+                // Insert welcome message at the beginning of body
+                document.body.insertBefore(welcomeDiv, document.body.firstChild);
+            } else {
+                // User not logged in, show form
+                showForm();
+            }
+        }
+        
+        // Check login status when page loads
+        window.onload = function() {
+            showWelcomeMessageOrForm();
+        };
+    </script>
+</body>
+</html>
