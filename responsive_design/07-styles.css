@@ -1,0 +1,19 @@
+/* Responsive typography: base font-size and breakpoints
+   Placed at the end of the Base section per instruction */
+
+html {
+  scroll-behavior: smooth;
+  font-size: 62.5%; /* default: 1rem = 10px */
+}
+
+@media (max-width: 480px) {
+  html {
+    font-size: 57%;
+  }
+}
+
+@media (min-width: 481px) and (max-width: 767px) {
+  html {
+    font-size: 60%;
+  }
+}
